@@ -176,7 +176,7 @@ def encode_auth_headers(client_id: str, client_secret: str) -> HTTPHeaderDict:
     return HTTPHeaderDict(Authorization=f"basic {authorization.decode()}")
 
 
-def decode_auth_headers(authorization: str) -> Tuple[str, str]:
+def decode_auth_headers(authorization: str) -> Tuple[str, Optional[str]]:
     """
     Decodes an encrypted HTTP basic authentication string.
     Returns a tuple of the form ``(client_id, client_secret)``, and

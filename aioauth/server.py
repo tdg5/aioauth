@@ -202,21 +202,22 @@ class AuthorizationServer(Generic[TRequest, TStorage]):
             content=content, status_code=HTTPStatus.OK, headers=default_headers
         )
 
-    def get_client_credentials(self, request: TRequest) -> Tuple[str, str]:
+    def get_client_credentials(self, request: TRequest) -> Tuple[str, Optional[str]]:
         client_id = request.post.client_id
         client_secret = request.post.client_secret
 
         if client_id is None or client_secret is None:
-            authorization = request.headers.get("Authorization", "")
-            headers = HTTPHeaderDict({"WWW-Authenticate": "Basic"})
+            authorization = request.headers.get("Authorization")
+            if authorization is not None:
+                headers = HTTPHeaderDict({"WWW-Authenticate": "Basic"})
 
-            # Get client credentials from the Authorization header.
-            try:
-                client_id, client_secret = decode_auth_headers(authorization)
-            except ValueError as exc:
-                raise InvalidClientError[TRequest](
-                    request=request, headers=headers
-                ) from exc
+                # Get client credentials from the Authorization header.
+                try:
+                    client_id, client_secret = decode_auth_headers(authorization)
+                except ValueError as exc:
+                    raise InvalidClientError[TRequest](
+                        request=request, headers=headers
+                    ) from exc
 
         return client_id, client_secret
 

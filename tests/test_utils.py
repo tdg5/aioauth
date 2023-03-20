@@ -56,6 +56,13 @@ def test_decode_auth_headers():
     with pytest.raises(ValueError):
         decode_auth_headers("basic привет")
 
+    # No password
+    authorization = "username:"
+    authorization = b64encode(authorization.encode("ascii"))
+    client_id, client_secret = decode_auth_headers(f"basic {authorization.decode()}")
+    assert client_id == "username"
+    assert client_secret is None
+
 
 def test_base_error_uri():
     ERROR_URI = "https://google.com"

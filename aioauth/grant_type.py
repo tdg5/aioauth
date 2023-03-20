@@ -27,7 +27,7 @@ from .utils import enforce_list, enforce_str, generate_token
 class GrantTypeBase(Generic[TRequest, TStorage]):
     """Base grant type that all other grant types inherit from."""
 
-    def __init__(self, storage: TStorage, client_id: str, client_secret: str):
+    def __init__(self, storage: TStorage, client_id: str, client_secret: Optional[str]):
         self.storage = storage
         self.client_id = client_id
         self.client_secret = client_secret
