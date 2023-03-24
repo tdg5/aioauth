@@ -31,6 +31,7 @@ class Query:
     code_challenge_method: Optional[CodeChallengeMethod] = None
     code_challenge: Optional[str] = None
     response_mode: Optional[ResponseMode] = None
+    prompt: Optional[str] = None
 
 
 @dataclass
