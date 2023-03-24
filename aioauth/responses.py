@@ -51,10 +51,11 @@ class TokenResponse:
     Used by :py:class:`aioauth.response_type.ResponseTypeToken`.
     """
 
-    expires_in: int
-    refresh_token_expires_in: int
     access_token: str
+    expires_in: int
+    id_token: str
     refresh_token: str
+    refresh_token_expires_in: int
     scope: str
     token_type: str = "Bearer"
 

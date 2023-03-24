@@ -104,9 +104,9 @@ class BaseStorage(Generic[TToken, TClient, TAuthorizationCode, TRequest]):
         request: TRequest,
         client_id: str,
         scope: str,
-        response_type: ResponseType,
-        redirect_uri: str,
-        nonce: str,
+        response_type: Optional[ResponseType],
+        redirect_uri: Optional[str],
+        nonce: Optional[str],
     ) -> str:
         """Returns an id_token.
         For more information see `OpenID Connect Core 1.0 incorporating errata set 1 section 2 <https://openid.net/specs/openid-connect-core-1_0.html#IDToken>`_.

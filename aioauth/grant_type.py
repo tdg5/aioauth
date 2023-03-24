@@ -48,11 +48,21 @@ class GrantTypeBase(Generic[TRequest, TStorage]):
             generate_token(48),
         )
 
+        id_token = await self.storage.get_id_token(
+            client_id=client.client_id,
+            nonce=request.query.nonce,
+            redirect_uri=request.query.redirect_uri,
+            request=request,
+            response_type=request.query.response_type,
+            scope=self.scope,
+        )
+
         return TokenResponse(
-            expires_in=token.expires_in,
-            refresh_token_expires_in=token.refresh_token_expires_in,
             access_token=token.access_token,
+            expires_in=token.expires_in,
+            id_token=id_token,
             refresh_token=token.refresh_token,
+            refresh_token_expires_in=token.refresh_token_expires_in,
             scope=token.scope,
             token_type=token.token_type,
         )
@@ -230,11 +240,21 @@ class RefreshTokenGrantType(GrantTypeBase[TRequest, TStorage]):
             request, client.client_id, new_scope, generate_token(42), generate_token(48)
         )
 
+        id_token = await self.storage.get_id_token(
+            client_id=client.client_id,
+            nonce=None,
+            redirect_uri=None,
+            request=request,
+            response_type=None,
+            scope=new_scope,
+        )
+
         return TokenResponse(
-            expires_in=token.expires_in,
-            refresh_token_expires_in=token.refresh_token_expires_in,
             access_token=token.access_token,
+            expires_in=token.expires_in,
+            id_token=id_token,
             refresh_token=token.refresh_token,
+            refresh_token_expires_in=token.refresh_token_expires_in,
             scope=token.scope,
             token_type=token.token_type,
         )

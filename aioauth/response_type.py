@@ -100,11 +100,20 @@ class ResponseTypeToken(ResponseTypeBase[TRequest, TStorage]):
             generate_token(42),
             generate_token(48),
         )
+        id_token = await self.storage.get_id_token(
+            client_id=client.client_id,
+            nonce=None,
+            redirect_uri=request.query.redirect_uri,
+            request=request,
+            response_type=request.query.response_type,  # type: ignore
+            scope=request.query.scope,
+        )
         return TokenResponse(
-            expires_in=token.expires_in,
-            refresh_token_expires_in=token.refresh_token_expires_in,
             access_token=token.access_token,
+            expires_in=token.expires_in,
+            id_token=id_token,
             refresh_token=token.refresh_token,
+            refresh_token_expires_in=token.refresh_token_expires_in,
             scope=token.scope,
             token_type=token.token_type,
         )
